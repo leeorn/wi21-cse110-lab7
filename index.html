@@ -144,8 +144,29 @@
       // From the 4 CRUD actions, this is the UPDATE action, and uses the PUT http method.
       // The main difference from createRecord() will be the URL you send data to; check
       // the writeup to view the URL pattern for create and update
-      function updateRecord() {
-        // TODO
+      function updateRecord(input) {
+        var endpoint = document.getElementById('endpoint').value;
+        var fieldId = document.getElementById('recordID').value;
+
+        if(input == 'show'){
+          document.getElementById('recordForm').style.display = 'block';
+          document.getElementById('recordIDcontainer').style.display = 'none';
+        }
+        else{
+          var newData = {
+            'author' : document.getElementById('author').value,
+            'title'  : document.getElementById('title').value
+          }
+
+          fetch(endpoint + '/' + fieldId, {
+          method : 'PUT',
+          headers: { "Content-type": "application/json" },
+          body   : JSON.stringify(newData)})
+          .then(response => response.json())
+          .then(json => document.getElementById('output').textContent = JSON.stringify(json))
+          .catch(err => document.getElementById('output').textContent = err)
+        }
+
       }
 
       // This function should use fetch to delete one existing entry in the given endpoint.
@@ -154,7 +175,20 @@
       // request; check the writeup to view the URL pattern for get one and delete. THERE IS NO 
       // delete all, only delete one.
       function deleteRecord() {
-        // TODO
+        var endpoint = document.getElementById('endpoint').value;
+        var fieldId = window.prompt('Type desired ID');
+        document.getElementById('recordForm').style.display = 'none';
+        document.getElementById('recordIDcontainer').style.display = 'none';
+
+        fetch(endpoint + '/' + fieldId,{
+          method: 'DELETE',
+          headers: {'Content-type': 'application/json'}
+        })
+
+        .then(response => response.json())
+        .then(json => document.getElementById('output').textContent = 'ID ' + fieldId + ' deleted')
+        .catch(err => document.getElementById('output').textContent = err)
+
       }
 
       window.addEventListener('DOMContentLoaded', () => {
