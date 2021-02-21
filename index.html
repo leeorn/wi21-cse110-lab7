@@ -84,6 +84,8 @@
       // else we want to fetch all. The logic is similar, so this function tries to reduce the code redundancy
       function _fetch(fetchedID){
         var endpoint = document.getElementById('endpoint').value;
+        document.getElementById('recordForm').style.display = 'none';
+        document.getElementById('recordIDcontainer').style.display = 'none';
 
         if(fetchedID){       
           endpoint = document.getElementById('endpoint').value + '/' + fetchedID;
@@ -150,10 +152,10 @@
 
         if(input == 'show'){
           document.getElementById('recordForm').style.display = 'block';
-          document.getElementById('recordIDcontainer').style.display = 'none';
+          document.getElementById('recordIDcontainer').style.display = 'block';
         }
         else{
-          var newData = {
+          var updateData = {
             'author' : document.getElementById('author').value,
             'title'  : document.getElementById('title').value
           }
@@ -161,7 +163,7 @@
           fetch(endpoint + '/' + fieldId, {
           method : 'PUT',
           headers: { "Content-type": "application/json" },
-          body   : JSON.stringify(newData)})
+          body   : JSON.stringify(updateData)})
           .then(response => response.json())
           .then(json => document.getElementById('output').textContent = JSON.stringify(json))
           .catch(err => document.getElementById('output').textContent = err)
