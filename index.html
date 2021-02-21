@@ -79,12 +79,29 @@
 
     <!-- Main Script -->
     <script type="module">
+
+      // if fetchedID != 0, then we want to fetch a spesific ID,
+      // else we want to fetch all. The logic is similar, so this function tries to reduce the code redundancy
+      function _fetch(fetchedID){
+        var endpoint = document.getElementById('endpoint').value;
+
+        if(fetchedID){       
+          endpoint = document.getElementById('endpoint').value + '/' + fetchedID;
+          // console.log(endpoint);
+        }
+        fetch(endpoint)
+        .then(response => response.json())
+        .then(json => document.getElementById('output').textContent = JSON.stringify(json))
+        .catch(err => document.getElementById('output').textContent = err)
+      }
+
       // This function should fetch all of the data from the given endpoint.
       // From the 4 CRUD actions, this is the READ action, and uses the GET http method.
       // The main difference from fetchOne() will be the URL you request from; check
       // the writeup to view the URL pattern for fetch one and fetch all
       function fetchAll() {
-        // TODO
+        _fetch(0);
+        
       }
 
       // This function should fetch one entry from the given endpoint.
@@ -92,15 +109,35 @@
       // The main difference from fetchAll() will be the URL you request from; check
       // the writeup to view the URL pattern for fetch one and fetch all
       function fetchOne() {
-        // TODO
+        var fieldId = window.prompt('Type desired ID');
+        _fetch(fieldId);
       }
 
       // This function should use fetch to create one entry in the given endpoint.
       // From the 4 CRUD actions, this is the CREATE action, and uses the POST http method.
       // The main difference from updateRecord() will be the URL you send data to; check
       // the writeup to view the URL pattern for create and update
-      function createRecord() {
-        // TODO
+      function createRecord(input) {
+        var endpoint = document.getElementById('endpoint').value;
+
+        if(input == 'show'){
+          document.getElementById('recordForm').style.display = 'block';
+          document.getElementById('recordIDcontainer').style.display = 'none';
+        }
+        else{
+          var newData = {
+            'author' : document.getElementById('author').value,
+            'title'  : document.getElementById('title').value
+          }
+        
+        fetch(endpoint, {
+          method : 'POST',
+          headers: { "Content-type": "application/json" },
+          body   : JSON.stringify(newData)})
+          .then(response => response.json())
+          .then(json => document.getElementById('output').textContent = JSON.stringify(json))
+          .catch(err => document.getElementById('output').textContent = err)
+        }
       }
 
       // This function should use fetch to update one existing entry in the given endpoint.

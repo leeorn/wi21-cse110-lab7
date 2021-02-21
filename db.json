@@ -4,13 +4,21 @@
       "id": 1,
       "title": "json-server",
       "author": "typicode"
-    }
+    },
+    {"id": 2,
+    "title": "secondPost",
+    "author": "Me"
+  }
   ],
   "comments": [
     {
       "id": 1,
       "body": "some comment",
       "postId": 1
+    },
+    {
+      "posts": "leeor",
+      "id": 2
     }
   ],
   "profile": {
